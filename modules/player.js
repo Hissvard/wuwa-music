@@ -2,7 +2,7 @@ import { $, ICONS, esc, formatTime, staffUrl, youtubeUrl } from './utils.js';
 import { MAIN_ROLES } from './store.js';
 
 let ytPlayer = null;
-let ytReady = false;
+let playerReady = false;
 let pendingVideo = null;
 let queue = [];
 let queueIndex = -1;
@@ -38,10 +38,7 @@ export function updatePlayingRows() {
 
 export function setupPlayer() {
   // the api calls this once loaded, so it has to exist before adding the script
-  window.onYouTubeIframeAPIReady = () => {
-    ytReady = true;
-    if (pendingVideo) loadVideo(pendingVideo);
-  };
+  window.onYouTubeIframeAPIReady = createPlayer;
   const script = document.createElement('script');
   script.src = 'https://www.youtube.com/iframe_api';
   document.head.append(script);
@@ -92,21 +89,19 @@ function playIndex(index) {
 }
 
 function loadVideo(videoId) {
-  if (!ytReady) {
-    pendingVideo = videoId;
-    return;
-  }
-  if (ytPlayer) {
-    ytPlayer.loadVideoById(videoId);
-    return;
-  }
+  if (playerReady) ytPlayer.loadVideoById(videoId);
+  else pendingVideo = videoId;
+}
+
+// created up front, booting the embed on the first click delays playback by a few seconds
+function createPlayer() {
   ytPlayer = new YT.Player('yt-player', {
-    videoId,
-    playerVars: { autoplay: 1, playsinline: 1 },
+    playerVars: { playsinline: 1 },
     events: {
       onReady: (e) => {
+        playerReady = true;
         e.target.setVolume(Number($('#volume').value));
-        e.target.playVideo();
+        if (pendingVideo) e.target.loadVideoById(pendingVideo);
       },
       onStateChange: (e) => {
         playing = e.data === YT.PlayerState.PLAYING;

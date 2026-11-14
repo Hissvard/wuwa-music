@@ -8,6 +8,7 @@ const STAT_ROLES = [
 ];
 // the game channel is listed as vocalist on almost every track
 const IGNORED_NAMES = ['Wuthering Waves'];
+const MAX_LEGEND_LINES = 12;
 
 let activeRole = STAT_ROLES[0].role;
 
@@ -16,8 +17,13 @@ export function setupStatsView() {
     const tab = e.target.closest('[data-role]');
     if (!tab) return;
     activeRole = tab.dataset.role;
+    $('#stats-timeline-role').value = activeRole;
     renderStatsView();
   });
+
+  $('#stats-timeline-role').innerHTML = store.roles.map((role) => `<option>${esc(role)}</option>`).join('');
+  $('#stats-timeline-role').value = activeRole;
+  $('#stats-timeline-role').addEventListener('change', drawTimeline);
   $('#stats-mode').addEventListener('change', drawTimeline);
 }
 
@@ -25,7 +31,7 @@ export function renderStatsView() {
   $('#stats-tabs').innerHTML = STAT_ROLES.map(({ role, label }) => `
     <button type="button" data-role="${esc(role)}" class="${role === activeRole ? 'active' : ''}">${esc(label)}</button>`).join('');
 
-  renderRanking(statPeople());
+  renderRanking(statPeople(activeRole));
   drawTimeline();
 }
 
@@ -41,14 +47,11 @@ function renderRanking(people) {
 }
 
 function drawTimeline() {
-  drawLineChart(
-    $('#stats-timeline'),
-    statPeople().map(({ name }) => ({ label: name, tracks: store.tracks.filter((t) => (t.staff[activeRole] || []).includes(name)) })),
-    $('#stats-mode').value,
-    { many: true },
-  );
+  const role = $('#stats-timeline-role').value;
+  const series = statPeople(role).map(({ name }) => ({ label: name, tracks: store.tracks.filter((t) => (t.staff[role] || []).includes(name)) }));
+  drawLineChart($('#stats-timeline'), series, $('#stats-mode').value, { many: series.length > MAX_LEGEND_LINES });
 }
 
-function statPeople() {
-  return peopleFor(activeRole).filter(({ name }) => !IGNORED_NAMES.includes(name));
+function statPeople(role) {
+  return peopleFor(role).filter(({ name }) => !IGNORED_NAMES.includes(name));
 }

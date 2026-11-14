@@ -976,6 +976,12 @@ body.modal-open {
   margin-top: 16px;
 }
 
+.section-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .section-head .section-title {
   margin: 0;
 }

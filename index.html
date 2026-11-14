@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wuthering Waves Music Staff</title>
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans:wght@400;500;600&display=swap">
@@ -74,10 +76,13 @@
 
       <div class="section-head">
         <h2 class="section-title">Over time</h2>
-        <select id="stats-mode">
-          <option value="cumulative">Cumulative</option>
-          <option value="month">Per month</option>
-        </select>
+        <div class="section-controls">
+          <select id="stats-timeline-role" title="Role"></select>
+          <select id="stats-mode">
+            <option value="cumulative">Cumulative</option>
+            <option value="month">Per month</option>
+          </select>
+        </div>
       </div>
       <div class="chart-box frame"><canvas id="stats-timeline"></canvas></div>
     </section>
