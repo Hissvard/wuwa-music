@@ -1,6 +1,6 @@
 import { $, esc, staffUrl } from './utils.js';
 import { store, peopleFor } from './store.js';
-import { drawBarChart, drawLineChart } from './charts.js';
+import { drawLineChart } from './charts.js';
 
 const STAT_ROLES = [
   { role: 'Vocal Solo', label: 'Vocalists' },
@@ -25,9 +25,19 @@ export function renderStatsView() {
   $('#stats-tabs').innerHTML = STAT_ROLES.map(({ role, label }) => `
     <button type="button" data-role="${esc(role)}" class="${role === activeRole ? 'active' : ''}">${esc(label)}</button>`).join('');
 
-  const people = statPeople();
-  drawBarChart($('#stats-ranking'), people, (name) => (location.hash = staffUrl(name)));
+  renderRanking(statPeople());
   drawTimeline();
+}
+
+function renderRanking(people) {
+  const max = people[0]?.count || 1;
+  $('#stats-ranking').innerHTML = people.map(({ name, count }, i) => `
+    <li class="${i < 3 ? 'top' : ''}">
+      <span class="rank-name" title="${esc(name)}">${esc(name)}</span>
+      <span class="rank-bar"><span style="width: ${(count / max) * 100}%"></span></span>
+      <span class="rank-count">${count}</span>
+      <a class="rank-details" href="${esc(staffUrl(name))}">Details</a>
+    </li>`).join('');
 }
 
 function drawTimeline() {

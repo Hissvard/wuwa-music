@@ -1,7 +1,6 @@
 import { store } from './store.js';
 
 const COLORS = ['#c9ac67', '#b8a2ec', '#7fc8e8', '#ef9dd5', '#8fd3b0', '#f2a072', '#8e8cf0', '#f4f0e3', '#e07a8f', '#6fb5a8', '#d6c27a', '#a3a0b5'];
-const BAR_HEIGHT = 22;
 const charts = {};
 
 export function setupCharts() {
@@ -42,35 +41,6 @@ export function drawLineChart(canvas, series, mode, { many = false } = {}) {
       interaction: many ? { mode: 'nearest', intersect: false } : { mode: 'index', intersect: false },
       scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
       plugins: { legend: { display: !many, labels: { boxWidth: 12 } } },
-    },
-  });
-}
-
-export function drawBarChart(canvas, items, onClick) {
-  canvas.parentElement.style.height = `${items.length * BAR_HEIGHT + 60}px`;
-  draw(canvas, {
-    type: 'bar',
-    data: {
-      labels: items.map((item) => item.name),
-      datasets: [{
-        label: 'Tracks',
-        data: items.map((item) => item.count),
-        backgroundColor: items.map((_, i) => (i < 3 ? COLORS[0] : 'rgba(184, 162, 236, 0.55)')),
-        borderRadius: 2,
-        barPercentage: 0.75,
-      }],
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: { beginAtZero: true, position: 'top', ticks: { precision: 0 } },
-        y: { ticks: { autoSkip: false, color: '#ece8f4' }, grid: { display: false } },
-      },
-      plugins: { legend: { display: false } },
-      onClick: (_, elements) => elements.length && onClick(items[elements[0].index].name),
-      onHover: (e, elements) => (e.native.target.style.cursor = elements.length ? 'pointer' : 'default'),
     },
   });
 }

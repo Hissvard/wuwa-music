@@ -911,6 +911,67 @@ body.modal-open {
   color: var(--cream);
 }
 
+.ranking {
+  margin: 20px 0 0;
+  padding: 16px 20px;
+  list-style: none;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.ranking li {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 36px auto;
+  align-items: center;
+  gap: 12px;
+  height: 34px;
+}
+
+.rank-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
+.rank-details {
+  padding: 3px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.rank-details:hover {
+  color: var(--cream);
+  border-color: var(--gold);
+}
+
+.rank-bar {
+  height: 12px;
+}
+
+.rank-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: rgba(184, 162, 236, 0.55);
+}
+
+.ranking li.top .rank-bar span {
+  background: var(--gold);
+}
+
+.rank-count {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
 .staff-section {
   margin-top: 16px;
 }
@@ -1260,6 +1321,15 @@ input[type="range"] {
   .staff-list {
     grid-template-columns: 92px minmax(0, 1fr);
     gap: 4px 10px;
+  }
+
+  .ranking {
+    padding: 12px;
+  }
+
+  .ranking li {
+    grid-template-columns: 92px minmax(0, 1fr) 24px auto;
+    gap: 8px;
   }
 
   .staff-list dt {
