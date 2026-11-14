@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wuthering Waves Music Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <small>Wuthering Waves</small>
+      <strong>Music Staff</strong>
+    </a>
+    <nav>
+      <a href="#/" data-view="albums">Albums</a>
+      <a href="#/stats" data-view="stats">Stats</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="view-albums" class="view">
+      <button type="button" id="filters-open" class="filters-toggle">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 5h18v2H3zm4 6h10v2H7zm3 6h4v2h-4z"/></svg>
+        Filters
+        <span id="filters-count" class="filters-count"></span>
+      </button>
+
+      <form id="filters" class="filters frame" autocomplete="off">
+        <div class="filters-sheet-head">Filters</div>
+        <label class="grow">
+          <span>Search</span>
+          <input type="search" name="search" placeholder="Track title or staff name">
+        </label>
+        <label>
+          <span>Role</span>
+          <select name="role"></select>
+        </label>
+        <label>
+          <span>Person</span>
+          <select name="person"></select>
+        </label>
+        <label>
+          <span>Released from</span>
+          <input type="date" name="from">
+        </label>
+        <label>
+          <span>to</span>
+          <input type="date" name="to">
+        </label>
+        <div class="filters-actions">
+          <button type="reset">Clear</button>
+          <button type="button" id="filters-close" class="filters-done">Show results</button>
+        </div>
+      </form>
+      <div id="type-tabs" class="tabs"></div>
+      <p id="summary" class="summary"></p>
+      <div id="albums" class="album-grid"></div>
+    </section>
+
+    <section id="view-staff" class="view" hidden>
+      <div id="staff-page"></div>
+    </section>
+
+    <section id="view-stats" class="view" hidden>
+      <h1>Stats</h1>
+      <div id="stats-tabs" class="tabs"></div>
+
+      <h2 class="section-title">Tracks per person</h2>
+      <div class="chart-box frame"><canvas id="stats-ranking"></canvas></div>
+
+      <div class="section-head">
+        <h2 class="section-title">Over time</h2>
+        <select id="stats-mode">
+          <option value="cumulative">Cumulative</option>
+          <option value="month">Per month</option>
+        </select>
+      </div>
+      <div class="chart-box frame"><canvas id="stats-timeline"></canvas></div>
+    </section>
+
+    <p class="site-footer">Unofficial fan project · Music and artwork © KURO GAMES</p>
+  </main>
+
+  <div id="album-modal" class="modal" hidden>
+    <div class="modal-panel frame" role="dialog" aria-modal="true">
+      <button class="modal-close" title="Close">✕</button>
+      <div id="album-modal-content"></div>
+    </div>
+  </div>
+
+  <div class="video-box" aria-hidden="true">
+    <div id="yt-player"></div>
+  </div>
+
+  <footer id="player" class="player" hidden>
+    <img id="player-thumb" alt="">
+    <div class="player-info">
+      <div class="player-title-row">
+        <strong id="player-title"></strong>
+        <a id="player-yt" target="_blank" rel="noopener">YouTube ↗</a>
+      </div>
+      <div id="player-credits" class="player-credits"></div>
+    </div>
+    <div class="player-controls">
+      <div class="buttons">
+        <button id="btn-prev" title="Previous">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button id="btn-play" class="play" title="Play/Pause"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+        <button id="btn-next" title="Next">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
+      <div class="seek">
+        <span id="time-current">0:00</span>
+        <input id="seek" type="range" min="0" max="100" value="0" step="1">
+        <span id="time-total">0:00</span>
+      </div>
+    </div>
+    <div class="player-extra">
+      <input id="volume" type="range" min="0" max="100" value="80" title="Volume">
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script type="module" src="index.js"></script>
+</body>
+</html>
